@@ -143,6 +143,11 @@ if [[ $DELETE == "TRUE" ]]; then
 	    sudo systemctl disable minecraft${DELNUM}.service
 	    echo "INFO: deleting /etc/cron.daily/mcbakup${DELNUM} /etc/systemd/system/minecraft${DELNUM}.service /opt/minecraft/$DELSERV"
 	    sudo rm -rf /etc/cron.daily/mcbakup${DELNUM} /etc/systemd/system/minecraft${DELNUM}.service /opt/minecraft/$DELSERV
+	    PID=$(sudo lsof -i -P -n | grep $SPORT | awk '{print $2}')
+	    if [ "$PID" -gt "10" ]; then
+		echo "WARN: Found process $PID still bound to port $SPORT after stopping service. Killing it."
+		sudo kill -9 $PID
+	    fi
 	fi
     else
 	echo "ERROR: could not find /opt/minecraft/$DELSERV"
