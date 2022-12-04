@@ -12,6 +12,7 @@ MAXRAM="4096"
 
 ### List of known installers
 declare -A versions=(
+    ["vanilla-1.8.9"]="https://launcher.mojang.com/v1/objects/b58b2ceb36e01bcd8dbf49c8fb66c55a9f0676cd/server.jar"
     ["vanilla-1.12.2"]="https://launcher.mojang.com/v1/objects/886945bfb2b978778c3a0288fd7fab09d315b25f/server.jar"
     ["vanilla-1.13.2"]="https://launcher.mojang.com/v1/objects/3737db93722a9e39eeada7c27e7aca28b144ffa7/server.jar"
     ["vanilla-1.14.4"]="https://launcher.mojang.com/v1/objects/3dc3d84a581f14691199cf6831b71ed1296a9fdf/server.jar"
@@ -19,11 +20,14 @@ declare -A versions=(
     ["vanilla-1.16.5"]="https://launcher.mojang.com/v1/objects/1b557e7b033b583cd9f66746b7a9ab1ec1673ced/server.jar"
     ["vanilla-1.17.1"]="https://launcher.mojang.com/v1/objects/a16d67e5807f57fc4e550299cf20226194497dc2/server.jar"
     ["vanilla-1.18.2"]="https://launcher.mojang.com/v1/objects/c8f83c5655308435b3dcf03c06d9fe8740a77469/server.jar"
+    ["vanilla-1.18.5"]="https://launcher.mojang.com/v1/objects/5f48eea55c7fd1881d9c63835b15dfb5bbcd3a67/server.jar"
+    ["vanilla-1.19.0"]="https://launcher.mojang.com/v1/objects/e00c4052dac1d59a1188b2aa9d5a87113aaf1122/server.jar"
     ["forge-1.12.2"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.12.2-14.23.5.2859/forge-1.12.2-14.23.5.2859-installer.jar"
-    ["forge-1.16.5"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.16.5-36.2.20/forge-1.16.5-36.2.20-installer.jar"
-    ["forge-1.18.2"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.0.48/forge-1.18.2-40.0.48-installer.jar"
+    ["forge-1.16.5"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.16.5-36.2.34/forge-1.16.5-36.2.34-installer.jar"
+    ["forge-1.18.2"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.86/forge-1.18.2-40.1.86-installer.jar"
     ["fabric-1.16.5"]="https://maven.fabricmc.net/net/fabricmc/fabric-installer/0.10.2/fabric-installer-0.10.2.jar"
     ["fabric-1.18.2"]="https://maven.fabricmc.net/net/fabricmc/fabric-installer/0.10.2/fabric-installer-0.10.2.jar"
+    ["fabric-1.19.2"]="https://maven.fabricmc.net/net/fabricmc/fabric-installer/0.11.1/fabric-installer-0.11.1.jar"
     ["magma-1.12.2"]="https://github.com/magmafoundation/Magma/releases/download/v761933c-CUSTOM/Magma-761933c-STABLE-server.jar"
     ["magma-1.16.5"]="https://github.com/magmafoundation/Magma-1.16.x/releases/download/v5a1cac0/Magma-1.16.5-36.2.19-5a1cac0-STABLE-installer.jar"
 )
@@ -385,8 +389,16 @@ else
     exit 1
 fi
 if [[ ! -f $DIR/$JAR ]]; then
-    echo "ERROR: $DIR/$JAR not found after installation."
-    exit 1
+    if [[ -f $DIR/run.sh && $VERSION =~ "forge" ]]; then
+	echo "INFO: Setting user JVM args for Forge in $DIR/user_jvm_args.txt."
+	echo "" >> $DIR/user_jvm_args.txt
+	echo "-Xmx${MEMORY}M" >> $DIR/user_jvm_args.txt
+	echo "-Xms${MEMORY}M" >> $DIR/user_jvm_args.txt
+	echo "$JAVAOPT" >> $DIR/user_jvm_args.txt
+    else
+	echo "ERROR: $DIR/$JAR not found after installation."
+	exit 1
+    fi
 else
     echo "INFO: $DIR/$JAR will be started via a systemd service file."
 fi
@@ -468,6 +480,14 @@ fi
 # TODO: if a whitelist was provided set "white-list=true" and "enforce-whitelist=true"
 
 ### create service file
+if [[ -f $DIR/run.sh && $VERSION =~ "forge" ]]; then
+    echo "INFO: Setting startup script to run.sh for Forge."
+    EXECSTART="$DIR/run.sh nogui"
+else
+    echo "INFO: Using default java start command."
+    EXECSTART="$JAVAV -Xmx${MEMORY}M -Xms${MEMORY}M $JAVAOPT -jar $JAR nogui"
+fi
+
 echo "INFO: writing service file to /etc/systemd/system/minecraft${NUM}.service"
 sudo tee /etc/systemd/system/minecraft${NUM}.service <<EOF > /dev/null
 [Unit]
@@ -484,7 +504,7 @@ ProtectSystem=full
 PrivateDevices=true
 NoNewPrivileges=true
 WorkingDirectory=/opt/minecraft/server${NUM}
-ExecStart=$JAVAV -Xmx${MEMORY}M -Xms${MEMORY}M $JAVAOPT -jar $JAR nogui
+ExecStart=$EXECSTART
 ExecStop=/opt/minecraft/tools/mcrcon/mcrcon -H 127.0.0.1 -P $RPORT -p $RPASS stop
 
 [Install]
