@@ -22,7 +22,7 @@ declare -A versions=(
     ["vanilla-1.18.2"]="https://launcher.mojang.com/v1/objects/c8f83c5655308435b3dcf03c06d9fe8740a77469/server.jar"
     ["vanilla-1.18.5"]="https://launcher.mojang.com/v1/objects/5f48eea55c7fd1881d9c63835b15dfb5bbcd3a67/server.jar"
     ["vanilla-1.19.0"]="https://launcher.mojang.com/v1/objects/e00c4052dac1d59a1188b2aa9d5a87113aaf1122/server.jar"
-	["vanilla-1.21.1"]="https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar"
+    ["vanilla-1.21.1"]="https://piston-data.mojang.com/v1/objects/59353fb40c36d304f2035d51e7d6e6baa98dc05c/server.jar"
     ["forge-1.12.2"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.12.2-14.23.5.2859/forge-1.12.2-14.23.5.2859-installer.jar"
     ["forge-1.16.5"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.16.5-36.2.34/forge-1.16.5-36.2.34-installer.jar"
     ["forge-1.18.2"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.86/forge-1.18.2-40.1.86-installer.jar"
@@ -293,15 +293,15 @@ if [[ "$(update-alternatives --display java 2>&1)" =~ "error: no alternatives fo
     echo "ERROR: java versions should have been installed but cant be found."
     exit 1
 fi
-if [ $(echo $VERSION | cut -d '-' -f 2 | cut -d '.' -f 2) -lt "17" ]; then
+if [ $(echo $VERSION | cut -d '-' -f 2 | cut -d '.' -f 2) -lt "12" ]; then
+    JAVAV="$(update-alternatives --display java | grep -m 1 -o "/.*8.*/bin/java")"
+    JAVAOPT="-Dlog4j.configurationFile=log4j2_17-111.xml"
+elif [ $(echo $VERSION | cut -d '-' -f 2 | cut -d '.' -f 2) -lt "17" ]; then
     JAVAV="$(update-alternatives --display java | grep -m 1 -o "/.*8.*/bin/java")"
     JAVAOPT="-Dlog4j.configurationFile=log4j2_112-116.xml"
 elif  [ $(echo $VERSION | cut -d '-' -f 2 | cut -d '.' -f 2) -lt "21" ]; then
     JAVAV="$(update-alternatives --display java | grep -m 1 -o "/.*17.*/bin/java")"
     JAVAOPT="-Dlog4j2.formatMsgNoLookups=true"
-elif  [ $(echo $VERSION | cut -d '-' -f 2 | cut -d '.' -f 2) -eq "21" ]; then
-    JAVAV="$(update-alternatives --display java | grep -m 1 -o "/.*21.*/bin/java")"
-    JAVAOPT=""
 else
     JAVAV="$(update-alternatives --display java | grep -m 1 -o "/.*21.*/bin/java")"
     JAVAOPT=""
