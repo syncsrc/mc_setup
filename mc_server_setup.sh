@@ -383,7 +383,7 @@ if [[ $VERSION =~ "fabric" ]]; then
     JAR="fabric-server-launch.jar"
 	##neoforge currently installs the same way forge does, (close enough at least) and since "neoforge" contains "forge", it will run the code below
 elif [[ $VERSION =~ "forge" ]]; then
-    echo "INFO: Installing Forge."
+    echo "INFO: Installing Forge/NeoForge."
     echo "INFO: Logging installation status at $DIR/forge_installer.log"
     eval $JAVAV -jar $(basename ${versions[$VERSION]}) --installServer > $DIR/forge_installer.log
     JAR="$(basename ${versions[$VERSION]} | sed 's/-installer//')"
