@@ -11,6 +11,8 @@ Vanilla: https://mcversions.net/
 
 Forge: https://files.minecraftforge.net/
 
+NeoForge: https://neoforged.net/
+
 Fabric: https://fabricmc.net/
 
 Magma: https://magmafoundation.org/
