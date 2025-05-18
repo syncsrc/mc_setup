@@ -19,6 +19,11 @@ Magma: https://magmafoundation.org/
 
 Only select Minecraft versions and Frameworks are currently supported, additional versions for supported frameworks can be added on request. 
 
+## Known Incompatibilities/Issues
+
+The following mods will likely not currently work with this script, or will require extra work to make function.
+
+Ferrite Core
 
 # Usage
 ```
