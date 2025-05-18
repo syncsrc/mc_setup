@@ -28,11 +28,11 @@ declare -A versions=(
     ["forge-1.18.2"]="https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.86/forge-1.18.2-40.1.86-installer.jar"
     ["fabric-1.16.5"]="https://maven.fabricmc.net/net/fabricmc/fabric-installer/0.10.2/fabric-installer-0.10.2.jar"
     ["fabric-1.18.2"]="https://maven.fabricmc.net/net/fabricmc/fabric-installer/0.10.2/fabric-installer-0.10.2.jar"
-	["fabric-1.21.5"]="https://maven.fabricmc.net/net/fabricmc/fabric-installer/1.0.3/fabric-installer-1.0.3.jar"
+    ["fabric-1.21.5"]="https://maven.fabricmc.net/net/fabricmc/fabric-installer/1.0.3/fabric-installer-1.0.3.jar"
     ["fabric-1.19.2"]="https://maven.fabricmc.net/net/fabricmc/fabric-installer/0.11.1/fabric-installer-0.11.1.jar"
     ["magma-1.12.2"]="https://github.com/magmafoundation/Magma/releases/download/v761933c-CUSTOM/Magma-761933c-STABLE-server.jar"
     ["magma-1.16.5"]="https://github.com/magmafoundation/Magma-1.16.x/releases/download/v5a1cac0/Magma-1.16.5-36.2.19-5a1cac0-STABLE-installer.jar"
-	["neoforge-1.21.5"]="https://maven.neoforged.net/releases/net/neoforged/neoforge/21.5.66-beta/neoforge-21.5.66-beta-installer.jar"
+    ["neoforge-1.21.5"]="https://maven.neoforged.net/releases/net/neoforged/neoforge/21.5.66-beta/neoforge-21.5.66-beta-installer.jar"
 )
 
 ## defaults
