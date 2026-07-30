@@ -21,9 +21,20 @@ Only select Minecraft versions and Frameworks are currently supported, additiona
 
 ## Known Incompatibilities/Issues
 
-The following mods will likely not currently work with this script, or will require extra work to make function.
+**Fabric**
 
+This script is incapable of installing older versions of Fabric. This can cause some mods on older versions that have not been updated to be compatible with the newest version of Fabric to fail to load. This seems to mostly affect mods on or prior to 1.19.
+
+This is known to affect the following mods:
+```
 Ferrite Core
+BcLib (Better Nether/End)
+```
+# Common Mistakes
+
+**getsockopt**
+
+This script creates a webpage listing all of your active servers. Sharing this webpage with your friends will inevitably lead to one or more of them attempting to connect to the webpage instead of the Minecraft server, resulting in the error "Connection Refused: getsockopt" for the person connecting.
 
 # Usage
 ```
